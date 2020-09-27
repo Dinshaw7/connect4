@@ -1,0 +1,181 @@
+openapi: 3.0.2
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: 'http://ec2-13-232-189-189.ap-south-1.compute.amazonaws.com:8080/v1'
+tags:
+  - name: connect4
+paths:
+  /connect4/healthCheck:
+    get:
+      tags:
+        - connect4
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiVersion:
+                    type: string
+                    example: v1
+                  data:
+                    type: string
+                    example: I am alive!
+                  error:
+                    type: object
+                    example: {}
+  /connect4/start:
+    get:
+      tags:
+        - connect4
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiVersion:
+                    type: string
+                    example: v1
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                          - READY
+                          - NOT-READY
+                      playerOne:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            example: rtyueie-rf4hujfu84jr-juruhy80jwt
+                          color:
+                            type: string
+                            enum:
+                              - Yellow
+                              - Red
+                            example: Yellow
+                      playerTwo:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            example: hdyheijfi-dyhrujskow-hjduhrujsjw
+                          color:
+                            type: string
+                            enum:
+                              - Yellow
+                              - Red
+                            example: Red
+                  error:
+                    type: object
+                    example: {}
+  /connect4/makeMove:
+    post:
+      tags:
+        - connect4
+      requestBody:
+        description: Make move Payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                playerToken:
+                  type: string
+                  example: rtyueie-rf4hujfu84jr-juruhy80jwt
+                column:
+                  type: number
+                  enum:
+                    - 0
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                    - 5
+                    - 6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiVersion:
+                    type: string
+                    example: v1
+                  data:
+                    type: object
+                    properties:
+                      playerToken:
+                        type: string
+                        example: rtyueie-rf4hujfu84jr-juruhy80jwt
+                      move:
+                        type: string
+                        enum:
+                          - VALID
+                          - INVALID
+                      won:
+                        type: boolean
+                        example: true
+                      winner:
+                        type: string
+                        enum:
+                          - Yellow
+                          - Red
+                          - None
+                  error:
+                    type: object
+                    example: {}
+  '/connect4/getMovesHistory/{playerToken}':
+    get:
+      tags:
+        - connect4
+      parameters:
+        - in: path
+          name: playerToken
+          required: true
+          schema:
+            type: string
+            example: rtyueie-rf4hujfu84jr-juruhy80jwt
+          description: token of player
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiVersion:
+                    type: string
+                    example: v1
+                  data:
+                    type: object
+                    properties:
+                      playerToken:
+                        type: string
+                        example: rtyueie-rf4hujfu84jr-juruhy80jwt
+                      color:
+                        type: string
+                        example: Yellow
+                      moves:
+                        type: array
+                        items:
+                          type: number
+                        example:
+                          - 1
+                          - 2
+                          - 1
+                  error:
+                    type: object
+                    example: {}
